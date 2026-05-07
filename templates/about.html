@@ -3,14 +3,30 @@
 
 {% block title %}About Us | Kalpvriksh Real Estate{% endblock %}
 
+{% block meta_description %}Discover the legacy of Kalpvriksh Real Estate. With over 15 years of excellence, we specialize in premium properties that redefine luxury living.{% endblock %}
+
+{% block extra_head %}
+<style>
+    .team-card:hover .team-social {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    .team-social {
+        transform: translateY(20px);
+        opacity: 0;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Hero Section -->
 <section class="relative h-[60vh] bg-cover bg-center bg-fixed" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')">
     <div class="absolute inset-0 bg-black bg-opacity-60"></div>
     <div class="relative container mx-auto px-6 h-full flex items-center justify-center text-center">
         <div class="animate-slide-up">
-            <span class="text-luxury-gold text-sm tracking-wider uppercase font-semibold">Our Journey</span>
-            <h1 class="text-4xl md:text-6xl font-serif font-bold text-white mt-4 mb-6">Crafting Legacies,<br>Building Dreams</h1>
+            <span class="text-luxury-gold text-sm tracking-widest uppercase font-semibold">Our Journey</span>
+            <h1 class="text-5xl md:text-7xl font-serif font-bold text-white mt-4 mb-6">Crafting Legacies,<br><span class="gradient-text">Building Dreams</span></h1>
             <div class="w-24 h-1 bg-luxury-gold mx-auto"></div>
         </div>
     </div>
@@ -99,7 +115,7 @@
                 <div class="space-y-6">
                     <div class="flex">
                         <div class="flex-shrink-0 mr-4">
-                            <div class="w-12 h-12 rounded-full bg-luxury-gold flex items-center justify-center">
+                            <div class="w-12 h-12 rounded-full bg-luxury-gold/20 border border-luxury-gold flex items-center justify-center">
                                 <i class="fas fa-hand-holding-heart text-luxury-green text-xl"></i>
                             </div>
                         </div>
@@ -110,7 +126,7 @@
                     </div>
                     <div class="flex">
                         <div class="flex-shrink-0 mr-4">
-                            <div class="w-12 h-12 rounded-full bg-luxury-gold flex items-center justify-center">
+                            <div class="w-12 h-12 rounded-full bg-luxury-gold/20 border border-luxury-gold flex items-center justify-center">
                                 <i class="fas fa-award text-luxury-green text-xl"></i>
                             </div>
                         </div>
@@ -121,7 +137,7 @@
                     </div>
                     <div class="flex">
                         <div class="flex-shrink-0 mr-4">
-                            <div class="w-12 h-12 rounded-full bg-luxury-gold flex items-center justify-center">
+                            <div class="w-12 h-12 rounded-full bg-luxury-gold/20 border border-luxury-gold flex items-center justify-center">
                                 <i class="fas fa-users text-luxury-green text-xl"></i>
                             </div>
                         </div>
@@ -135,6 +151,56 @@
             <div class="animate-on-scroll">
                 <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1632&q=80" alt="Team Meeting" class="rounded-xl shadow-2xl border border-gray-700">
             </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-6">
+        <div class="text-center mb-16 animate-on-scroll">
+            
+            <h2 class="text-4xl font-serif font-bold text-luxury-charcoal mt-2 luxury-underline">Meet Our Team</h2>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-12">
+            {% for member in team_members %}
+            <div class="team-card group animate-on-scroll">
+                <div class="relative bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-100">
+                    <div class="relative h-[450px] overflow-hidden">
+                        {% if member.image %}
+                        <img src="{{ member.image.url }}" alt="{{ member.name }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                        {% endif %}
+                        <div class="absolute inset-0 bg-gradient-to-t from-luxury-green/90 via-luxury-green/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        
+                        <div class="absolute inset-0 flex items-center justify-center team-social">
+                            <div class="flex space-x-4">
+                                {% if member.linkedin %}
+                                <a href="{{ member.linkedin }}" target="_blank" class="w-12 h-12 glass rounded-full flex items-center justify-center text-white hover:bg-luxury-gold hover:text-luxury-green transition-all transform hover:scale-110 shadow-lg"><i class="fab fa-linkedin-in"></i></a>
+                                {% endif %}
+                                {% if member.email %}
+                                <a href="mailto:{{ member.email }}" class="w-12 h-12 glass rounded-full flex items-center justify-center text-white hover:bg-luxury-gold hover:text-luxury-green transition-all transform hover:scale-110 shadow-lg"><i class="far fa-envelope"></i></a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-8 text-center bg-white relative z-10">
+                        <div class="absolute -top-1 left-1/2 -translate-x-1/2 w-16 h-1 bg-luxury-gold rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                        <h4 class="text-2xl font-serif font-bold text-luxury-charcoal">{{ member.name }}</h4>
+                        <p class="text-luxury-gold font-medium uppercase tracking-widest text-xs mt-2">{{ member.designation }}</p>
+                        <div class="mt-4 flex flex-wrap justify-center gap-2">
+                            {% for tag in member.get_expertise_list %}
+                            <span class="text-[10px] px-3 py-1 bg-luxury-ivory text-luxury-charcoal rounded-full border border-luxury-gold/20">{{ tag }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-3 text-center py-12">
+                <p class="text-gray-500">Our team members will be updated soon.</p>
+            </div>
+            {% endfor %}
         </div>
     </div>
 </section>

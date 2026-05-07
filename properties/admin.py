@@ -36,8 +36,8 @@ class PropertyAdmin(admin.ModelAdmin):
     inlines = [PropertyImageInline, PropertyConfigurationInline]
     fieldsets = (
         (None, {'fields': ('title', 'slug', 'status', 'is_featured', 'is_urgent_sale')}),
-        ('Property Info', {'fields': ('property_type', 'price', 'price_display', 'hide_price', 'price_per_sqft', 'booking_amount', 'description')}),
-        ('Details', {'fields': ('bedrooms', 'bathrooms', 'area_sqft', 'carpet_area', 'floor_no', 'total_floors', 'amenities')}),
+        ('Property Info', {'fields': ('property_type', 'price_per_sqft', 'booking_amount', 'description')}),
+        ('Details', {'fields': ('total_land_parcel', 'total_floors', 'construction_type', 'amenities')}),
         ('Location', {'fields': ('address', 'sublocation', 'city', 'pincode')}),
         ('Media', {'fields': ('main_image', 'video_url', 'floor_plan')}),
         ('Builder', {'fields': ('builder', 'builder_name', 'builder_logo', 'rera_number', 'possession_date')}),

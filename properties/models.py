@@ -87,6 +87,8 @@ class Property(models.Model):
     hide_price = models.BooleanField(default=False, help_text="Show 'Price on Request' instead of the actual price")
     
     # Property Details
+    total_land_parcel = models.CharField(max_length=100, blank=True, help_text="e.g. 5 Acres")
+    construction_type = models.CharField(max_length=100, blank=True, help_text="e.g. Mivan Construction")
     bedrooms = models.IntegerField(null=True, blank=True)
     bathrooms = models.IntegerField(null=True, blank=True)
     area_sqft = models.DecimalField(max_digits=10, decimal_places=2, db_index=True)

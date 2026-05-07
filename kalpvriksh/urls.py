@@ -7,14 +7,16 @@ from leads import views as leads_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    
+
+    # Career Page (Reverted to properties views and prioritized)
+    path('careers/', properties_views.careers, name='careers'),
+
     # Properties app (includes Home, Property List, About, etc.)
-    path('', include('properties.urls')), 
-    
-    # Leads & Careers (Fix for 'careers' not found)
+    path('', include('properties.urls')),
+
+    # Leads functionality
     path('lead-capture/', leads_views.lead_capture, name='lead_capture'),
     path('newsletter-subscribe/', leads_views.newsletter_subscribe, name='newsletter_subscribe'),
-    path('careers/', leads_views.careers, name='careers'),
     path('thank-you/', leads_views.thank_you, name='thank_you'),
     path('leads/api/chatbot/', leads_views.chatbot_api, name='chatbot_api'),
 ]

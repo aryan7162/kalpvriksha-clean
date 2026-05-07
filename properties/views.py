@@ -5,6 +5,7 @@ from django.db.models import Q
 from rest_framework import viewsets, permissions
 from .models import Property, City, Sublocation
 from .serializers import CitySerializer, SublocationSerializer
+from core.models import JobOpening, TeamMember
 
 class CityViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = City.objects.all()
@@ -138,7 +139,8 @@ def property_detail(request, slug):
     return render(request, 'properties/property_detail.html', context)
 
 def about(request):
-    return render(request, 'about.html')
+    team_members = TeamMember.objects.all()
+    return render(request, 'about.html', {'team_members': team_members})
 
 def contact(request):
     return render(request, 'contact.html')
@@ -153,23 +155,7 @@ def faq(request):
     return render(request, 'faq.html')
 
 def careers(request):
-    # Example dummy data for jobs
-    jobs = [
-        {
-            'title': 'Sales Executive',
-            'location': 'Pune',
-            'type': 'Full-time',
-            'description': 'Identify and reach out to potential buyers.',
-            'requirements': ['Excellent communication', '1-2 years experience']
-        },
-        {
-            'title': 'Digital Marketing Lead',
-            'location': 'Mumbai',
-            'type': 'Full-time',
-            'description': 'Oversee social media and SEO campaigns.',
-            'requirements': ['Expertise in Meta Ads', '3+ years experience']
-        }
-    ]
+    jobs = JobOpening.objects.filter(is_active=True).order_by('-created_at')
     return render(request, 'careers.html', {'jobs': jobs})
 
 def thank_you(request):

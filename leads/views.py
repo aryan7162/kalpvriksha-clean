@@ -17,6 +17,10 @@ def lead_capture(request):
         phone = request.POST.get('phone', '')
         message = request.POST.get('message')
         property_id = request.POST.get('property')
+        portfolio_link = request.POST.get('portfolio_link')
+        
+        if portfolio_link:
+            message = f"{message}\n\nPortfolio/LinkedIn: {portfolio_link}"
         configuration = request.POST.get('configuration', '')
         
         # Get IP address
@@ -109,24 +113,8 @@ def newsletter_subscribe(request):
     return redirect('home')
 
 def careers(request):
-    # Backend logic for job listings
-    # In a full implementation, these would come from a Job model
-    jobs = [
-        {
-            'title': 'Senior Sales Manager',
-            'location': 'Pune',
-            'type': 'Full Time',
-            'description': 'We are seeking an experienced Sales Manager to lead our luxury property division. You will be responsible for High Net-worth Individual (HNI) client acquisition and closing premium deals.',
-            'requirements': ['5+ years in Real Estate Sales', 'Strong network of HNI clients', 'Excellent communication skills']
-        },
-        {
-            'title': 'Real Estate Consultant',
-            'location': 'Mumbai',
-            'type': 'Full Time',
-            'description': 'Guide clients through their property buying journey. Conduct site visits, handle negotiations, and ensure a smooth transaction process.',
-            'requirements': ['2+ years experience', 'Vehicle is mandatory', 'Good local market knowledge']
-        },
-    ]
+    # Fetch active job positions from the database
+    jobs = Job.objects.filter(is_active=True).order_by('-created_at')
     
     context = {
         'jobs': jobs
