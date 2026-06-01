@@ -5,7 +5,11 @@ from django.db.models import Q
 from rest_framework import viewsets, permissions
 from .models import Property, City, Sublocation
 from .serializers import CitySerializer, SublocationSerializer
-from core.models import JobOpening, TeamMember
+try:
+    from core.models import JobOpening, TeamMember
+except ImportError:
+    JobOpening = None
+    TeamMember = None
 
 class CityViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = City.objects.all()
@@ -164,3 +168,17 @@ def thank_you(request):
 def newsletter_subscribe(request):
     # Placeholder for subscription logic
     return JsonResponse({'status': 'success', 'message': 'Subscribed!'})
+
+def happy_families(request):
+    """View to display happy families/testimonials"""
+    # Get all published properties that have testimonials
+    # You can customize this query based on your actual model structure
+    properties_with_testimonials = Property.objects.filter(
+        status='published',
+        # If you have a testimonials field or related model, add it here
+        # For now, just get featured properties
+    ).order_by('-created_at')[:12]
+    
+    return render(request, 'happy_families.html', {
+        'properties': properties_with_testimonials,
+    })

@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class Lead(models.Model):
     LEAD_SOURCES = (
@@ -81,3 +82,38 @@ class NewsletterSubscriber(models.Model):
     
     def __str__(self):
         return self.email
+    
+
+class HappyFamily(models.Model):
+    name = models.CharField(max_length=200, help_text="Family name or Client name")
+    location = models.CharField(max_length=200, blank=True, help_text="e.g., Koregaon Park, Pune")
+    content = models.TextField(verbose_name="Testimonial Text")
+    photo = models.ImageField(upload_to='happy_families/photos/', blank=True, null=True)
+    video_file = models.FileField(upload_to='happy_families/videos/', blank=True, null=True, help_text="Upload testimonial video (MP4)")
+    document = models.FileField(upload_to='happy_families/docs/', blank=True, null=True, help_text="Optional appreciation letter/document")
+    rating = models.PositiveIntegerField(default=5, validators=[MinValueValidator(1), MaxValueValidator(5)])
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Happy Family"
+        verbose_name_plural = "Happy Families"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Family: {self.name}"
+
+class Job(models.Model):
+    title = models.CharField(max_length=200)
+    location = models.CharField(max_length=200)
+    type = models.CharField(max_length=100, choices=[('Full-time', 'Full-time'), ('Part-time', 'Part-time'), ('Contract', 'Contract')])
+    description = models.TextField()
+    requirements = models.TextField(help_text="Enter requirements separated by new lines")
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_requirements_list(self):
+        return [r.strip() for r in self.requirements.split('\n') if r.strip()]
+
+    def __str__(self):
+        return self.title

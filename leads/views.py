@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.urls import reverse
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Lead, NewsletterSubscriber
+from .models import Lead, NewsletterSubscriber, HappyFamily, Job
 from properties.models import Property
 
 def lead_capture(request):
@@ -121,6 +121,11 @@ def careers(request):
     }
     return render(request, 'careers.html', context)
 
+def happy_families(request):
+    families = HappyFamily.objects.filter(is_active=True)
+    context = {'families': families}
+    return render(request, 'happy_families.html', context)
+
 def thank_you(request):
     return render(request, 'leads/thank_you.html')
 
@@ -213,6 +218,8 @@ def chatbot_api(request):
                 Lead.objects.create(
                     first_name="Chatbot",
                     last_name="Lead",
+                    email="chatbot@internal.local",
+                    phone="0000",
                     message=f"Requirement captured via chatbot: {message}",
                     source='chatbot'
                 )

@@ -10,6 +10,7 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path('', views.home, name='home'),
     path('properties/', views.property_list, name='property_list'),
+    path('happy-families/', views.happy_families, name='happy_families'),
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     path('privacy-policy/', views.privacy_policy, name='privacy_policy'),

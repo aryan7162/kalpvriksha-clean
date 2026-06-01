@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Happy Families | Kalpvriksh Real Estate{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative h-[50vh] bg-cover bg-center bg-fixed" style="background-image: url('https://images.unsplash.com/photo-1511895426328-dc8714191300?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')">
+    <div class="absolute inset-0 bg-luxury-green bg-opacity-70"></div>
+    <div class="relative container mx-auto px-6 h-full flex items-center justify-center text-center">
+        <div class="animate-slide-up">
+            <span class="text-luxury-gold text-sm tracking-widest uppercase font-semibold">Testimonials</span>
+            <h1 class="text-4xl md:text-6xl font-serif font-bold text-white mt-4 mb-6">Happy Families</h1>
+            <div class="w-24 h-1 bg-luxury-gold mx-auto"></div>
+            <p class="text-white mt-6 max-w-2xl mx-auto italic">"A home is where your story begins. We are proud to be a part of these beautiful beginnings."</p>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Grid -->
+<section class="py-24 bg-luxury-ivory">
+    <div class="container mx-auto px-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {% for item in families %}
+            <div class="bg-white rounded-3xl overflow-hidden shadow-xl hover-lift animate-on-scroll flex flex-col h-full">
+                <!-- Media Section -->
+                <div class="relative aspect-video overflow-hidden bg-luxury-charcoal">
+                    {% if item.video_file %}
+                    <video class="w-full h-full object-cover" controls poster="{% if item.photo %}{{ item.photo.url }}{% endif %}">
+                        <source src="{{ item.video_file.url }}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    {% elif item.photo %}
+                    <img src="{{ item.photo.url }}" alt="{{ item.name }}" class="w-full h-full object-cover transition duration-700 hover:scale-110">
+                    {% else %}
+                    <div class="w-full h-full flex items-center justify-center">
+                        <i class="fas fa-users text-5xl text-luxury-gold/30"></i>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Content Section -->
+                <div class="p-8 flex-1 flex flex-col">
+                    <div class="flex mb-4">
+                        {% for i in "12345" %}
+                        <i class="fas fa-star {% if forloop.counter <= item.rating %}text-luxury-gold{% else %}text-gray-200{% endif %} text-sm"></i>
+                        {% endfor %}
+                    </div>
+                    
+                    <blockquote class="text-gray-600 italic leading-relaxed mb-6 flex-1">
+                        "{{ item.content }}"
+                    </blockquote>
+                    
+                    <div class="border-t border-gray-100 pt-6 mt-auto">
+                        <h4 class="text-xl font-serif font-bold text-luxury-charcoal">{{ item.name }}</h4>
+                        <p class="text-sm text-luxury-gold font-medium">{{ item.location }}</p>
+                        
+                        {% if item.document %}
+                        <a href="{{ item.document.url }}" target="_blank" class="inline-flex items-center mt-4 text-xs font-bold text-luxury-green hover:text-luxury-gold transition uppercase tracking-widest">
+                            <i class="fas fa-file-pdf mr-2"></i> View Letter
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-span-full text-center py-20">
+                <p class="text-gray-500 italic">Our happy families will share their stories here soon.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20 bg-luxury-green text-white">
+    <div class="container mx-auto px-6 text-center">
+        <h2 class="text-3xl font-serif font-bold mb-6">Be Our Next Happy Family</h2>
+        <p class="text-gray-300 mb-8 max-w-xl mx-auto">Discover the perfect property that fits your lifestyle and aspirations.</p>
+        <a href="{% url 'home' %}#contact" class="bg-luxury-gold text-luxury-green px-10 py-4 rounded-full font-bold hover:bg-white transition duration-300 shadow-lg inline-block">
+            Start Your Journey
+        </a>
+    </div>
+</section>
+{% endblock %}
